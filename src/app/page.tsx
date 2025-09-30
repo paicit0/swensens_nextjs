@@ -1,12 +1,12 @@
-"use client";
+// src/app/page.tsx
 
-import { ChevronDown, MapPin } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
 import Image from "next/image";
+import { createClient } from "../../utils/supabase/server";
+import { ChevronDown, MapPin } from "lucide-react";
 
-export default function Home() {
-  const [showMobileMenu, setShowMobileMenu] = useState(false);
+export default async function Home() {
+  const supabase = createClient();
 
   return (
     <div className="min-h-screen bg-white">
