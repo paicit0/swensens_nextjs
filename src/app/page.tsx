@@ -1,6 +1,9 @@
 "use client";
+
+import { ChevronDown, MapPin } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import Image from "next/image";
 
 export default function Home() {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
@@ -8,25 +11,34 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-white">
       {/* Main Content */}
-      <main className="w-full min-h-[calc(100vh-110px-88px)]">
+      <main className="w-full">
         <section className="container m-auto max-w-[1200px] px-6 h-full space-y-6 py-10">
           {/* Delivery Address Selector */}
-          <div className="flex flex-row h-fit lg:flex-col items-start gap-4 md:h-14 md:flex-row md:items-center md:gap-6">
-            <div className="flex text-nowrap text-base font-bold text-black self-center">
+          <div className="flex flex-col h-fit lg:flex-col items-start gap-4 md:h-14 md:flex-row md:items-center md:gap-6">
+            <div className="flex text-nowrap self-start font-bold text-black ">
               ไปส่งที่:
             </div>
             <div className="flex w-full items-center justify-between gap-2 rounded-sm border border-gray-300 p-3 bg-gray-50 pointer-events-none">
+              <MapPin />
               <div className="relative line-clamp-1 flex grow text-left text-sm font-bold text-black">
                 เลือกที่อยู่สำหรับจัดส่ง
               </div>
+              <ChevronDown />
             </div>
           </div>
 
           {/* Hero Banner Skeleton */}
-          <div className="aspect-[32/9] h-auto w-full animate-pulse rounded-md bg-gray-100"></div>
+          <div className="aspect-3/1 h-auto w-full rounded-md bg-gray-100">
+            <Image
+              src="/promo-banner.webp"
+              width={500}
+              height={500}
+              alt="Banner"
+            />
+          </div>
 
           {/* Flash Deal Section Skeleton */}
-          <div className="min-h-[180px] w-full py-4">
+          <div className="hidden min-h-[180px] w-full py-4">
             <div className="px-4 pb-2">
               <div className="h-6 w-32 animate-pulse bg-gray-100 rounded-md lg:h-9 lg:w-48"></div>
             </div>
@@ -74,9 +86,19 @@ export default function Home() {
 
           {/* Menu Tabs Skeleton */}
           <div className="flex w-full flex-col items-center gap-11">
-            <div className="flex w-full flex-col gap-4">
-              <div className="h-5 w-full animate-pulse bg-gray-100 rounded-md"></div>
-              <div className="h-5 w-20 animate-pulse bg-gray-100 rounded-md"></div>
+            <div className="flex w-full items-center gap-16 overflow-y-auto overflow-auto pb-4 sm:pb-0 !px-0 gap-x-[12px]">
+              <div>ไอศกรีมเค้ก</div>
+              <div>ไอศกรีมเค้ก</div>
+              <div>ไอศกรีมเค้ก</div>
+              <div>ไอศกรีมเค้ก</div>
+              <div>ไอศกรีมเค้ก</div>
+              <div>ไอศกรีมเค้ก</div>
+              <div>ไอศกรีมเค้ก</div>
+              <div>ไอศกรีมเค้ก</div>
+              <div>ไอศกรีมเค้ก</div>
+              <div>ไอศกรีมเค้ก</div>
+              <div>ไอศกรีมเค้ก</div>
+              <div>ไอศกรีมเค้ก</div>
             </div>
 
             {/* Menu Grid Skeleton */}
