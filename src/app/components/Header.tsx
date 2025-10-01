@@ -1,18 +1,46 @@
 // components/Header.tsx
 
-import { Globe, Handbag, Menu } from "lucide-react";
+"use client";
+
+import { Globe, Handbag, Menu, X } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
+import Sidebar from "./Sidebar";
 
 export default function Header() {
+  const [isOpened, setIsOpened] = useState(false);
+
   return (
-    <header className="flex sticky h-20 w-full bg-white">
+    <header className="flex sticky z-50 h-20 w-full bg-white">
       <div className="flex justify-between w-full self-center">
         <div className="flex lg:hidden ml-6 self-center">
-          <Menu color="black" />
+          <button onClick={() => setIsOpened(true)}>
+            <Menu color="black" />
+          </button>
+
+          {isOpened && (
+            <div className="">
+              <div
+                className="fixed inset-0 bg-black/40 z-40"
+                onClick={() => setIsOpened(false)}
+              />
+              <div className="fixed w-4/5 h-full pl-[24px] top-0 left-0 z-50 bg-blue-500 shadow-2xl">
+                <div className="flex justify-end p-4">
+                  <button
+                    className="p-2 hover:bg-blue-600 rounded-full transition-colors"
+                    onClick={() => setIsOpened(false)}
+                  >
+                    <X color="red" size={24} />
+                  </button>
+                </div>
+                <Sidebar onClose={() => setIsOpened(false)} />
+              </div>
+            </div>
+          )}
         </div>
 
         <Link href="/">
-          <div className="w-38 h-10 bg-gradient-to-r from-red-600 to-pink-500 rounded-lg flex items-center justify-center text-white font-bold text-xl">
+          <div className="flex items-center justify-center w-38 h-10 bg-gradient-to-r from-red-600 to-pink-500 rounded-lg  text-white font-bold text-xl">
             SWENSEN'S
           </div>
         </Link>
@@ -22,7 +50,7 @@ export default function Header() {
             <Handbag color="black" />
           </div>
           <Link href="/login" className="">
-            <button className="relative lg:flex hidden  items-center justify-center gap-2 h-12 min-w-[12rem] px-4 py-3 rounded-full font-semibold text-lg text-white bg-red-700 hover:bg-red-600 disabled:bg-gray-400">
+            <button className="relative lg:flex hidden items-center justify-center gap-2 h-12 min-w-[12rem] px-4 py-3 rounded-full font-semibold text-lg text-white bg-red-700 hover:bg-red-600 disabled:bg-gray-400">
               <div className="flex items-center">เข้าสู่ระบบ / ลงทะเบียน</div>
             </button>
           </Link>
