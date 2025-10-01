@@ -4,9 +4,15 @@ import Link from "next/link";
 import Image from "next/image";
 import { createClient } from "../../utils/supabase/server";
 import { ChevronDown, MapPin } from "lucide-react";
+import ProductList from "./components/ProductList";
 
 export default async function Home() {
-  const supabase = createClient();
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("products")
+    .select("product_id, product_name, product_price");
+  console.log("products fetch:", data);
+  console.log("products fetch error:", error);
 
   return (
     <div className="min-h-screen bg-white">
@@ -37,88 +43,29 @@ export default async function Home() {
             />
           </div>
 
-          {/* Flash Deal Section Skeleton */}
-          <div className="hidden min-h-[180px] w-full py-4">
-            <div className="px-4 pb-2">
-              <div className="h-6 w-32 animate-pulse bg-gray-100 rounded-md lg:h-9 lg:w-48"></div>
-            </div>
-            <div className="flex gap-4 overflow-x-auto px-4 hide-scrollbar">
-              {[1, 2, 3, 4].map((i) => (
-                <div
-                  key={i}
-                  className="h-28 w-40 shrink-0 animate-pulse bg-gray-100 rounded-lg lg:h-48 lg:w-72"
-                ></div>
-              ))}
-            </div>
-          </div>
-
           {/* Promotions Section */}
-          <div className="flex w-full flex-col items-center gap-11">
-            <div className="w-full">
-              <h2 className="mb-6 mt-4 text-left text-xl font-bold sm:text-2xl 2xl:text-3xl text-black">
-                โปรโมชัน
-              </h2>
-              <div className="grid h-fit w-full grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-4">
-                {[1, 2, 3, 4].map((i) => (
-                  <div
-                    key={i}
-                    className="flex h-auto w-full flex-col justify-between overflow-hidden rounded-lg border border-solid border-gray-200"
-                  >
-                    <div className="flex flex-col gap-1">
-                      <div className="flex aspect-[4/3] h-auto w-full animate-pulse bg-gray-100 rounded-lg"></div>
-                      <div className="mb-3 flex h-fit flex-col gap-1 p-3">
-                        <div className="flex h-5 w-16 animate-pulse bg-gray-100 rounded-lg"></div>
-                        <div className="flex h-5 w-full animate-pulse bg-gray-100 rounded-lg"></div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+
+          <div className="mb-6 mt-4 text-left text-xl font-bold sm:text-2xl 2xl:text-3xl text-black">
+            โปรโมชัน
+          </div>
+          <ProductList initialProducts={data || []} sortType="" />
+
+          {/* Menu Section */}
+          <div className="flex items-center justify-between text-xl font-bold sm:text-2xl 2xl:text-3xl text-black">
+            เมนูจัดส่ง
           </div>
 
           {/* Menu Section */}
-          <div className="flex items-center justify-between">
-            <div className="flex text-xl font-bold sm:text-2xl 2xl:text-3xl text-black">
-              เมนูจัดส่ง
-            </div>
+          <div className="flex w-full items-center gap-16 overflow-y-auto overflow-auto pb-4 sm:pb-0 !px-0 gap-x-[12px]">
+            <div>ไอศกรีมเค้ก</div>
+            <div>ไอศกรีมควอท (450g)</div>
+            <div>ไอศกรีมมินิ ควอท (250g)</div>
+            <div>ซันเด เซต</div>
+            <div>ไอศกรีมสกู๊ป</div>
+            <div>ท็อปปิ้ง</div>
           </div>
 
-          {/* Menu Tabs Skeleton */}
-          <div className="flex w-full flex-col items-center gap-11">
-            <div className="flex w-full items-center gap-16 overflow-y-auto overflow-auto pb-4 sm:pb-0 !px-0 gap-x-[12px]">
-              <div>ไอศกรีมเค้ก</div>
-              <div>ไอศกรีมเค้ก</div>
-              <div>ไอศกรีมเค้ก</div>
-              <div>ไอศกรีมเค้ก</div>
-              <div>ไอศกรีมเค้ก</div>
-              <div>ไอศกรีมเค้ก</div>
-              <div>ไอศกรีมเค้ก</div>
-              <div>ไอศกรีมเค้ก</div>
-              <div>ไอศกรีมเค้ก</div>
-              <div>ไอศกรีมเค้ก</div>
-              <div>ไอศกรีมเค้ก</div>
-              <div>ไอศกรีมเค้ก</div>
-            </div>
-
-            {/* Menu Grid Skeleton */}
-            <div className="grid h-fit w-full grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-4">
-              {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-                <div
-                  key={i}
-                  className="flex h-auto w-full flex-col justify-between overflow-hidden rounded-lg border border-solid border-gray-200"
-                >
-                  <div className="flex flex-col gap-1">
-                    <div className="flex aspect-[4/3] h-auto w-full animate-pulse bg-gray-100 rounded-lg"></div>
-                    <div className="mb-3 flex h-fit flex-col gap-1 p-3">
-                      <div className="flex h-5 w-16 animate-pulse bg-gray-100 rounded-lg"></div>
-                      <div className="flex h-5 w-full animate-pulse bg-gray-100 rounded-lg"></div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+          <ProductList initialProducts={data || []} sortType="" />
         </section>
       </main>
     </div>
