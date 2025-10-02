@@ -44,9 +44,7 @@ export default function Sidebar({ onClose }: SidebarProps) {
         <div className="flex items-center justify-center px-4 py-3 rounded-full font-semibold text-lg text-black bg-red-700 hover:bg-red-600 disabled:bg-gray-400">
           <div className="flex flex-row gap-2 items-center self-center content-center">
             <div><User size={18}/></div>
-            <div>เข้าสู่ระบบ / ลงทะเบียน</div>
-            
-            
+            <div className="text-white">เข้าสู่ระบบ / ลงทะเบียน</div>
           </div>
         </div>
       </Link>
