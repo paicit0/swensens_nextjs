@@ -19,13 +19,13 @@ export default function Header() {
           </button>
 
           {isOpened && (
-            <div className="">
+            <div>
               <div
                 className="fixed inset-0 bg-black/40 z-40"
                 onClick={() => setIsOpened(false)}
               />
-              <div className="fixed w-4/5 h-full pl-[24px] top-0 left-0 z-50 bg-blue-500 shadow-2xl">
-                <div className="flex justify-end p-4">
+              <div className="fixed w-4/5 h-full top-0 left-0 z-50 bg-white shadow-2xl">
+                <div className="absolute right-0.5 top-0.1">
                   <button
                     className="p-2 hover:bg-blue-600 rounded-full transition-colors"
                     onClick={() => setIsOpened(false)}
