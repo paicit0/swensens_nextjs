@@ -5,6 +5,7 @@
 import Link from "next/link";
 import { registerUser, registerUserType } from "./action";
 import { useForm } from "react-hook-form";
+import { ChevronLeft } from "lucide-react";
 
 export default function RegisterPage() {
   const {
@@ -13,13 +14,14 @@ export default function RegisterPage() {
     formState: { errors, isSubmitting },
   } = useForm<registerUserType>({
     defaultValues: {
-      email: "",
-      password: "",
-      firstName: "",
-      lastName: "",
-      phone: "",
-      birthDate: "",
-      gender: "male",
+      user_role: "",
+      user_email: "",
+      user_password: "",
+      user_firstName: "",
+      user_lastName: "",
+      user_phone: "",
+      user_birthDate: "",
+      user_gender: "",
     },
   });
 
@@ -29,28 +31,34 @@ export default function RegisterPage() {
   };
 
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen">
-      <Link href="/login" className="mb-4 text-blue-600 underline">
-        กลับ
-      </Link>
+    <main className="flex flex-col pt-6 pb-6 items-center justify-center min-h-screen bg-gray-200">
       <form
+        className="flex flex-col gap-4 p-6 rounded-md bg-white shadow-md"
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col gap-4 p-6 rounded-md bg-white shadow-md w-80"
       >
-        <h1 className="text-3xl font-bold">Register</h1>
+        <Link href="/login">
+          <div className="flex flex-row self-start">
+            <ChevronLeft />
+            <div>กลับ</div>
+          </div>
+        </Link>
+        <h1 className="text-[33px] font-bold">
+          สมัครสมาชิกฟรี! รับสิทธิประโยชน์และส่วนลดมากมาย
+        </h1>
 
         <label className="flex flex-col gap-2">
           <span>ชื่อ</span>
           <input
             type="text"
-            {...register("firstName", {
+            {...register("user_firstName", {
               required: "กรุณากรอกชื่อ",
             })}
+            placeholder="ชื่อ"
             className="border border-gray-300 rounded-md p-2"
           />
-          {errors.firstName && (
+          {errors.user_firstName && (
             <span className="text-red-500 text-sm">
-              {errors.firstName.message}
+              {errors.user_firstName.message}
             </span>
           )}
         </label>
@@ -59,14 +67,15 @@ export default function RegisterPage() {
           <span>นามสกุล</span>
           <input
             type="text"
-            {...register("lastName", {
+            {...register("user_lastName", {
               required: "กรุณากรอกนามสกุล",
             })}
+            placeholder="นามสกุล"
             className="border border-gray-300 rounded-md p-2"
           />
-          {errors.lastName && (
+          {errors.user_lastName && (
             <span className="text-red-500 text-sm">
-              {errors.lastName.message}
+              {errors.user_lastName.message}
             </span>
           )}
         </label>
@@ -75,17 +84,20 @@ export default function RegisterPage() {
           <span>เบอร์โทรศัพท์</span>
           <input
             type="text"
-            {...register("phone", {
+            {...register("user_phone", {
               required: "กรุณากรอกเบอร์โทรศัพท์",
               pattern: {
                 value: /^[0-9]{10}$/,
                 message: "กรุณากรอกเบอร์โทรศัพท์ให้ถูกต้อง (10 หลัก)",
               },
             })}
+            placeholder="เบอร์โทรศัพท์"
             className="border border-gray-300 rounded-md p-2"
           />
-          {errors.phone && (
-            <span className="text-red-500 text-sm">{errors.phone.message}</span>
+          {errors.user_phone && (
+            <span className="text-red-500 text-sm">
+              {errors.user_phone.message}
+            </span>
           )}
         </label>
 
@@ -93,14 +105,15 @@ export default function RegisterPage() {
           <span>วันเกิด</span>
           <input
             type="date"
-            {...register("birthDate", {
+            {...register("user_birthDate", {
               required: "กรุณาเลือกวันเกิด",
             })}
+            placeholder="วว/ดด/ปปปป"
             className="border border-gray-300 rounded-md p-2"
           />
-          {errors.birthDate && (
+          {errors.user_birthDate && (
             <span className="text-red-500 text-sm">
-              {errors.birthDate.message}
+              {errors.user_birthDate.message}
             </span>
           )}
         </label>
@@ -109,16 +122,19 @@ export default function RegisterPage() {
           <span>อีเมล (ไม่ระบุก็ได้)</span>
           <input
             type="email"
-            {...register("email", {
+            {...register("user_email", {
               pattern: {
                 value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                 message: "กรุณากรอกอีเมลให้ถูกต้อง",
               },
             })}
+            placeholder="อีเมล (ไม่ระบุได้)"
             className="border border-gray-300 rounded-md p-2"
           />
-          {errors.email && (
-            <span className="text-red-500 text-sm">{errors.email.message}</span>
+          {errors.user_email && (
+            <span className="text-red-500 text-sm">
+              {errors.user_email.message}
+            </span>
           )}
         </label>
 
@@ -126,7 +142,7 @@ export default function RegisterPage() {
           <span>รหัสผ่าน</span>
           <input
             type="password"
-            {...register("password", {
+            {...register("user_password", {
               required: "กรุณากรอกรหัสผ่าน",
               minLength: {
                 value: 8,
@@ -135,39 +151,96 @@ export default function RegisterPage() {
             })}
             className="border border-gray-300 rounded-md p-2"
           />
-          {errors.password && (
+          {errors.user_password && (
             <span className="text-red-500 text-sm">
-              {errors.password.message}
+              {errors.user_password.message}
             </span>
           )}
         </label>
 
-        <label className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2">
           <span>เพศ</span>
-          <select
-            {...register("gender", {
-              required: "กรุณาเลือกเพศ",
-            })}
-            className="border border-gray-300 rounded-md p-2"
-          >
-            <option value="male">ชาย</option>
-            <option value="female">หญิง</option>
-            <option value="other">ไม่ระบุ</option>
-          </select>
-          {errors.gender && (
+          <div className="flex gap-4">
+            <label className="flex items-center gap-1">
+              <input
+                type="radio"
+                value="male"
+                {...register("user_gender", {
+                  required: "กรุณาเลือกเพศ",
+                })}
+                className="form-radio text-indigo-600"
+              />
+              <span>ชาย</span>
+            </label>
+
+            <label className="flex items-center gap-1">
+              <input
+                type="radio"
+                value="female"
+                {...register("user_gender")}
+                className="form-radio text-indigo-600"
+              />
+              <span>หญิง</span>
+            </label>
+
+            <label className="flex items-center gap-1">
+              <input
+                type="radio"
+                value="other"
+                defaultChecked
+                {...register("user_gender")}
+                className="form-radio text-indigo-600"
+              />
+              <span>ไม่ระบุ</span>
+            </label>
+          </div>
+          {errors.user_gender && (
             <span className="text-red-500 text-sm">
-              {errors.gender.message}
+              {errors.user_gender.message}
             </span>
           )}
-        </label>
+        </div>
 
         <button
           type="submit"
           disabled={isSubmitting}
-          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded disabled:bg-gray-400 disabled:cursor-not-allowed"
+          className="rounded-full text-white font-bold py-5 px-4 disabled:bg-gray-400 disabled:cursor-not-allowed bg-red-400 "
         >
-          {isSubmitting ? "กำลังสมัคร..." : "สมัครสมาชิก"}
+          {isSubmitting ? "กำลังสมัคร..." : "สร้างบัญชี"}
         </button>
+        <div className="flex flex-row gap-2 self-center">
+          <div>มีบัญชีสมาชิกอยู่แล้วใช่หรือไม่</div>
+          <Link href="/login" className=" underline">
+            เข้าสู่ระบบ
+          </Link>
+        </div>
+        <div className="flex flex-row">
+          <input type="checkbox" defaultChecked></input>
+          <div>ฉันได้อ่านและยอมรับ</div>
+          <button className="text-blue-500 underline">ข้อกำหนดการใช้งาน</button>
+          <div>และ</div>
+          <button className="text-blue-500 underline">
+            นโยบายความเป็นส่วนตัว
+          </button>
+          <div> ของสเวนเซ่นส์</div>
+        </div>
+        <div className="flex flex-row">
+          <input type="checkbox"></input>
+          <div>
+            ฉันยินยอมรับข้อมูลข่าวสาร กิจกรรมส่งเสริมการขายต่างๆ
+            จากสเวนเซ่นส์และ
+          </div>
+          <button className="text-blue-500 underline">บริษัทในเครือ</button>
+
+          <div>
+            โดยเราจะเก็บข้อมูลของท่านไว้เป็นความลับ
+            สามารถศึกษาเงื่อนไขหรือข้อตกลง
+          </div>
+          <button className="text-blue-500 underline">
+            นโยบายความเป็นส่วนตัว
+          </button>
+          <div> เพิ่มเติมได้ที่เว็บไซต์ของบริษัทฯ</div>
+        </div>
       </form>
     </main>
   );
