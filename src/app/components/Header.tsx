@@ -11,9 +11,9 @@ export default function Header() {
   const [isOpened, setIsOpened] = useState(false);
 
   return (
-    <header className="flex sticky z-50 h-20 w-full bg-white">
-      <div className="flex justify-between w-full self-center">
-        <div className="flex lg:hidden ml-6 self-center">
+    <header className="flex sticky z-50 pt-4 pb-4 pl-6 pr-6 w-full bg-white">
+      <div className="flex justify-between w-full gap-6 self-center">
+        <div className="flex lg:hidden self-center">
           <button onClick={() => setIsOpened(true)}>
             <Menu color="black" />
           </button>
@@ -46,7 +46,7 @@ export default function Header() {
         </Link>
 
         <div className="flex flex-row">
-          <div className="flex mr-6 self-center">
+          <div className="flex self-center">
             <Handbag color="black" />
           </div>
           <Link href="/login" className="">

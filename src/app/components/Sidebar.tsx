@@ -36,18 +36,21 @@ export default function Sidebar({ onClose }: SidebarProps) {
       <div className="flex flex-row justify-between pl-4 pb-8 text-[20px]">
         <div>ภาษา - TH</div>
         <div>
-          <ChevronDown size={12}/>
+          <ChevronDown size={12} />
         </div>
       </div>
 
       <Link href="/login" onClick={onClose}>
         <div className="flex items-center justify-center px-4 py-3 rounded-full font-semibold text-lg text-black bg-red-700 hover:bg-red-600 disabled:bg-gray-400">
           <div className="flex flex-row gap-2 items-center self-center content-center">
-            <div><User size={18}/></div>
+            <div>
+              <User size={18} />
+            </div>
             <div className="text-white">เข้าสู่ระบบ / ลงทะเบียน</div>
           </div>
         </div>
       </Link>
+      <Link href={"/manageProduct"} onClick={onClose}> Admin</Link>
     </div>
   );
 }

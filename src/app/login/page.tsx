@@ -6,9 +6,12 @@ import Link from "next/link";
 import { useState } from "react";
 import { loginUser, loginUserType } from "./action";
 import { useForm } from "react-hook-form";
+import { ChevronLeft, Mail } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const [emailMode, setEmailMode] = useState(false);
+  const router = useRouter();
 
   const {
     register,
@@ -22,17 +25,30 @@ export default function LoginPage() {
   });
 
   const onSubmit = async (data: loginUserType) => {
-    await loginUser(data);
+    const result = await loginUser(data);
+    console.log("[login/page.tsx] result:", result);
+    if (result.success) {
+      console.log("[login/page.tsx] login successful");
+      router.push("/");
+      router.refresh();
+    } else {
+      console.error("[login/page.tsx] login failed");
+    }
   };
 
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen">
-      <Link href="/">กลับ</Link>
+    <main className="flex flex-col justify-start min-h-screen bg-gray-200">
       <form
-        className="flex flex-col gap-4 p-6 rounded-md bg-white shadow-md"
+        className="flex flex-col gap-8 p-6 mt-5 rounded-md bg-white shadow-md"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <h1 className="text-3xl font-bold">
+        <Link href="/">
+          <div className="flex flex-row self-start">
+            <ChevronLeft />
+            <div>กลับ</div>
+          </div>
+        </Link>
+        <h1 className="text-[33px] font-bold">
           ยินดีต้อนรับสมาชิก Swensen's เข้าสู่ระบบแล้วเริ่มสั่งไอศกรีมกันเลย!
         </h1>
         {emailMode ? (
@@ -62,7 +78,11 @@ export default function LoginPage() {
           </div>
         ) : (
           <label className="flex flex-col gap-2">
-            <span>เบอร์โทรศัพท์</span>
+            <div className="flex flex-row">
+              <span>เบอร์โทรศัพท์</span>
+              <span className="text-red-400">*</span>
+            </div>
+
             <input
               type="text"
               className="border border-gray-300 rounded-md p-2"
@@ -75,37 +95,44 @@ export default function LoginPage() {
             เข้าสู่ระบบ
           </button>
         ) : (
-          <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+          <button className="px-4 py-2.5 rounded-full bg-blue-500 hover:bg-blue-600 text-white font-bold ">
             ดำเนินการต่อ
           </button>
         )}
+        <div className="flex flex-row self-center">
+          <div className="flex-1 border-t border-border-line"></div>
+          <div>หรือ</div>
+          <div className="flex-1 border-t border-border-line"></div>
+        </div>
+        {emailMode ? (
+          <button
+            onClick={() => {
+              setEmailMode(false);
+            }}
+          >
+            เข้าสู่ระบบด้วยเบอร์โทรศัพท์
+          </button>
+        ) : (
+          <button
+            className="flex rounded-full border border-gray-400 px-4 py-2.5 justify-center gap-2"
+            onClick={() => {
+              setEmailMode(true);
+            }}
+          >
+            <div>
+              <Mail />
+            </div>
+            เข้าสู่ระบบด้วยอีเมล
+          </button>
+        )}
+
+        <div className="flex flex-row gap-4 self-center">
+          <div>ยังไม่มีบัญชีใช่หรือไม่</div>
+          <Link href="/register" className="underline">
+            สร้างบัญชี
+          </Link>
+        </div>
       </form>
-
-      <div>หรือ</div>
-      {emailMode ? (
-        <button
-          onClick={() => {
-            setEmailMode(false);
-          }}
-        >
-          เข้าสู่ระบบด้วยเบอร์โทรศัพท์
-        </button>
-      ) : (
-        <button
-          onClick={() => {
-            setEmailMode(true);
-          }}
-        >
-          เข้าสู่ระบบด้วยอีเมล
-        </button>
-      )}
-
-      <div className="flex flex-row gap-4">
-        <div>ยังไม่มีบัญชีใช่หรือไม่</div>
-        <Link href="/register" className="underline">
-          สร้างบัญชี
-        </Link>
-      </div>
     </main>
   );
 }
