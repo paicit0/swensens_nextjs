@@ -2,29 +2,34 @@
 
 "use server";
 
-import { createClient } from "../../../utils/supabase/server";
+import { revalidatePath } from "next/cache";
+import { createClient } from "../../utils/supabase/server";
+import { redirect } from "next/navigation";
 
 export interface loginUserType {
   email: string;
   password: string;
 }
 
-export async function loginUser(user: loginUserType) {
-  const email = user.email;
-  const password = user.password;
+interface loginUserReturnType {
+  success: boolean;
+}
 
+export async function loginUser(user: loginUserType): Promise<loginUserReturnType> {
   const supabase = await createClient();
 
   const { data, error } = await supabase.auth.signInWithPassword({
-    email: email,
-    password: password,
+    email: user.email,
+    password: user.password,
   });
 
   if (error) {
-    return { success: false, message: error.message };
+    redirect("/error");
   }
-  return {
-    success: true,
-    message: "Login successful!",
-  };
+
+  console.log("login/action: supabase.auth User Email:", data.user.email);
+
+  revalidatePath("/", "layout");
+
+  return { success: true };
 }
