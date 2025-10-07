@@ -3,6 +3,26 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import localFont from 'next/font/local';
+
+// export const dbHelvethaicaX = localFont({
+//   src: [
+//     {
+//       path: '../public/fonts/db-helvethaica-x-regular.woff2',
+//       weight: '400', // Match the actual weight of the font file
+//       style: 'normal',
+//     },
+//     {
+//       path: '../public/fonts/db-helvethaica-x-bold.woff2',
+//       weight: '700', // Match the actual weight of the font file
+//       style: 'normal',
+//     },
+//     // Add all other weights/styles you have (e.g., Medium, Italic)
+//   ],
+//   variable: '--font-db-helvethaica-x', // This is the CSS variable name
+//   display: 'swap', // Recommended to prevent text from being invisible while loading
+// });
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
