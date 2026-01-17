@@ -3,7 +3,7 @@
 "use server";
 
 import Image from "next/image";
-import { createClient } from "../utils/supabase/client";
+import { createClient } from "../utils/supabase/server";
 import { ChevronDown, MapPin } from "lucide-react";
 import ProductSection from "./components/ProductSection";
 import ProductList from "./components/ProductList";

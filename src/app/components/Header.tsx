@@ -4,11 +4,33 @@
 
 import { Globe, Handbag, Menu, X } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
+import { createClient } from "../../utils/supabase/client";
+import { User as SupabaseUser } from "@supabase/supabase-js";
+import { useRouter } from "next/navigation";
 
 export default function Header() {
   const [isOpened, setIsOpened] = useState(false);
+  const [user, setUser] = useState<SupabaseUser | null>(null);
+  const supabase = createClient();
+  const router = useRouter();
+
+  useEffect(() => {
+    const getUser = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      setUser(user);
+    };
+    getUser();
+  }, [supabase.auth]);
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    setUser(null);
+    router.refresh();
+  };
 
   return (
     <header className="flex sticky z-50 pt-4 pb-4 pl-6 pr-6 w-full bg-white">
@@ -49,11 +71,25 @@ export default function Header() {
           <div className="flex self-center">
             <Handbag color="black" />
           </div>
-          <Link href="/login" className="">
-            <button className="relative lg:flex hidden items-center justify-center gap-2 h-12 min-w-[12rem] px-4 py-3 rounded-full font-semibold text-lg text-white bg-red-700 hover:bg-red-600 disabled:bg-gray-400">
-              <div className="flex items-center">เข้าสู่ระบบ / ลงทะเบียน</div>
-            </button>
-          </Link>
+          {user ? (
+            <div className="flex items-center gap-4">
+              <span className="hidden lg:block text-black font-semibold">
+                {user.email}
+              </span>
+              <button
+                onClick={handleSignOut}
+                className="relative lg:flex hidden items-center justify-center gap-2 h-12 px-4 py-3 rounded-full font-semibold text-lg text-white bg-red-700 hover:bg-red-600 disabled:bg-gray-400"
+              >
+                ออกจากระบบ
+              </button>
+            </div>
+          ) : (
+            <Link href="/login" className="">
+              <button className="relative lg:flex hidden items-center justify-center gap-2 h-12 min-w-[12rem] px-4 py-3 rounded-full font-semibold text-lg text-white bg-red-700 hover:bg-red-600 disabled:bg-gray-400">
+                <div className="flex items-center">เข้าสู่ระบบ / ลงทะเบียน</div>
+              </button>
+            </Link>
+          )}
           <div className="flex-row hidden lg:flex">
             <Globe color="black" />
             <div className="text-black">TH</div>

@@ -2,18 +2,45 @@
 
 "use client";
 
-import { ChevronDown, ReceiptText, User } from "lucide-react";
+import { ChevronDown, ReceiptText, User, LogOut } from "lucide-react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { createClient } from "../../utils/supabase/client";
+import { User as SupabaseUser } from "@supabase/supabase-js";
+import { useRouter } from "next/navigation";
 
 interface SidebarProps {
   onClose?: () => void;
 }
 
 export default function Sidebar({ onClose }: SidebarProps) {
+  const [user, setUser] = useState<SupabaseUser | null>(null);
+  const supabase = createClient();
+  const router = useRouter();
+
+  useEffect(() => {
+    const getUser = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      setUser(user);
+    };
+    getUser();
+  }, [supabase.auth]);
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    setUser(null);
+    if (onClose) onClose();
+    router.refresh();
+  };
+
   return (
     <div className="flex flex-col pl-6 pr-6 pt-16 pb-4">
       <div className="text-[24px] pb-3 font-semibold">
-        Login to begin your ice cream journey
+        {user
+          ? `ยินดีต้อนรับ, ${user.email}`
+          : "Login to begin your ice cream journey"}
       </div>
       <div className="flex flex-col pl-12 pt-4 gap-4 text-[20px]">
         <div className="flex flex-row gap-2 pb-3 -ml-8">
@@ -40,17 +67,32 @@ export default function Sidebar({ onClose }: SidebarProps) {
         </div>
       </div>
 
-      <Link href="/login" onClick={onClose}>
-        <div className="flex items-center justify-center px-4 py-3 rounded-full font-semibold text-lg text-black bg-red-700 hover:bg-red-600 disabled:bg-gray-400">
-          <div className="flex flex-row gap-2 items-center self-center content-center">
-            <div>
-              <User size={18} />
-            </div>
-            <div className="text-white">เข้าสู่ระบบ / ลงทะเบียน</div>
+      {user ? (
+        <button
+          onClick={handleSignOut}
+          className="flex items-center justify-center px-4 py-3 rounded-full font-semibold text-lg text-white bg-red-700 hover:bg-red-600"
+        >
+          <div className="flex flex-row gap-2 items-center">
+            <LogOut size={18} />
+            <div>ออกจากระบบ</div>
           </div>
-        </div>
+        </button>
+      ) : (
+        <Link href="/login" onClick={onClose}>
+          <div className="flex items-center justify-center px-4 py-3 rounded-full font-semibold text-lg text-black bg-red-700 hover:bg-red-600 disabled:bg-gray-400">
+            <div className="flex flex-row gap-2 items-center self-center content-center">
+              <div>
+                <User size={18} />
+              </div>
+              <div className="text-white">เข้าสู่ระบบ / ลงทะเบียน</div>
+            </div>
+          </div>
+        </Link>
+      )}
+      <Link href={"/manageProduct"} onClick={onClose}>
+        {" "}
+        Admin
       </Link>
-      <Link href={"/manageProduct"} onClick={onClose}> Admin</Link>
     </div>
   );
 }
